@@ -4,6 +4,7 @@ from config import DevelopmentConfig
 from models import db, Pedido
 from datetime import datetime
 
+
 app = Flask(__name__)
 CORS(app)
 app.config.from_object(DevelopmentConfig)
@@ -11,7 +12,7 @@ app.config.from_object(DevelopmentConfig)
 #DECORADORES O RUTAS
 @app.route('/api', methods=['GET'])
 def get_data():
-    data = {"message": "Bienvenido a PIZZERIA API!"}
+    data = {"message": "Pizzeria"}
     return data
 
 @app.route('/api/addpedido', methods=['POST'])
@@ -61,7 +62,6 @@ def add_pedido():
 
     return jsonify({"status": True,"message": f"Pedidos agregados exitosamente","pedidos_ids": pedidos_ids}), 200
 
-
 @app.route('/api/getpedidos', methods=['GET'])
 def get_pedido():
     pedidos = Pedido.query.all()
@@ -85,15 +85,10 @@ def get_pedido():
         for pedido in pedidos
     ]
 
-    data = jsonify({"status": True, "pedidos": pedidos_data}), 201
-            
-
-    return data
+    return jsonify({"status": True, "pedidos": pedidos_data}), 200
 
 if __name__ == '__main__':
     db.init_app(app)
     with app.app_context():
-        db.create_all()
+        db.create_all()  # Esto crea las tablas en la base de datos
     app.run(debug=True)
-
-
